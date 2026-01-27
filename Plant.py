@@ -9,6 +9,10 @@ class Plant():
         self.exWaterLevel = waterLevel
         self.exLightLevel = lightLevel
         
+    @classmethod
+    def noArgPlant(cls):
+        return cls("None", 0, 0)
+        
     
     def compareLight(self, lightLevel):
         dif = abs(self.exLightLevel-lightLevel) < LIGHT_DEVIATION
