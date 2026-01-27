@@ -5,11 +5,11 @@ from Plant import Plant
 
 
 app = QApplication(sys.argv)
-userPlant = Plant.noArgPlant()
+initialPlant = Plant.noArgPlant()
 
 window = Holder()
 
-window.setPlantName(userPlant.plantName)
+window.setPlantName(initialPlant.plantName)
 
 window.show()
 
