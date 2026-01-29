@@ -9,8 +9,6 @@ class Holder(QMainWindow):
         super().__init__()
         self.setWindowTitle("Planthing!")
         self.resize(800, 600)
-        #self.setMinimumSize(800,600)
-        #self.setMaximumSize(800,600)
         self.setStyleSheet("QMainWindow { background-color: #162c3d; }")
         
         vbox = QVBoxLayout()
