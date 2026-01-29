@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget, QVBoxLayout, QLabel
 from PySide6.QtCore import Qt
-from Display_Indicator import Picture_Stack, Display_Indicator, Value_Pane
+from Display_Indicator import Display_Indicator
 from PySide6.QtGui import QFont
+from Search_Window import Search_Window
 
 class Holder(QMainWindow):
     def __init__ (self):
@@ -24,18 +25,18 @@ class Holder(QMainWindow):
         self.plantNameLabel.setFont(font)
         vbox.addWidget(self.plantNameLabel, alignment=Qt.AlignCenter)
         
-
-        
         self.imageDisplay = Display_Indicator()
         self.imageDisplay.setMaximumSize(200,500)
         vbox.addWidget(self.imageDisplay, alignment=Qt.AlignCenter)
         
+        self.searchWindow = None
+        
         #vbox.setAlignment(Qt.AlignmentFlag.AlignCenter) 
         vbox.addStretch()
         
-        testImageButton = QPushButton("Press to change image")
-        testImageButton.clicked.connect(self.imageDisplay.pictures.swapImages)
-        vbox.addWidget(testImageButton, alignment=Qt.AlignCenter)
+        searchButton = QPushButton("Search database")
+        searchButton.clicked.connect(self.showSearchWindow)
+        vbox.addWidget(searchButton, alignment=Qt.AlignCenter)
         
         layoutWidget = QWidget()
         
@@ -48,3 +49,9 @@ class Holder(QMainWindow):
     def setPlantName(self, name):
         combinedName = f"Plant name: {name}"
         self.plantNameLabel.setText(combinedName)
+        
+    def showSearchWindow(self):
+        if self.searchWindow is None:
+            self.searchWindow = Search_Window()
+        
+        self.searchWindow.show()
