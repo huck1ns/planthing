@@ -45,7 +45,8 @@ class Results(QWidget):
         for plant in results: 
             plantName = plant["common_name"]
             id = plant["id"]
-            result = self.createResult(plantName, id)
+            science = plant["scientific_name"]
+            result = self.createResult(plantName, id, science)
             resultsButtons.append(result)
             
         for button in resultsButtons:
@@ -57,8 +58,9 @@ class Results(QWidget):
             
         
         
-    def createResult(self, plantName, plantID):
-        result = QPushButton(plantName)
+    def createResult(self, plantName, plantID, science):
+        names = (str(plantName)+ "\n"+ str(science))
+        result = QPushButton(names)
         result.setFixedSize(350, 47)
         
         #when button pressed, take id and search api again with that to pull watering and light

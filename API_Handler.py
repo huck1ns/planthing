@@ -24,9 +24,9 @@ def searchAPI(query=None):
         
         data = response.json()
         
-        
-        
+    
         return data
+        
         
     except requests.exceptions.RequestException as e:
         print("Error searching API: {e}")
@@ -38,7 +38,8 @@ def parseAPI(data):
     for plant in data.get('data', [])[:10]:
         filtered_data = {
             'common_name': plant.get('common_name'),
-            'id': plant.get('id')
+            'id': plant.get('id'),
+            'scientific_name': plant.get('scientific_name')
         }
         
         plantData.append(filtered_data)
@@ -48,6 +49,8 @@ def parseAPI(data):
     
 def userSearch(searchString):
     return parseAPI(searchAPI(searchString))
+
+
 
 
 
