@@ -7,6 +7,7 @@ load_dotenv()
 
 API_KEY = os.getenv("PLANT_API_KEY")
 BASE_URL = os.getenv("BASE_URL")
+ID_URL = os.getenv("ID_URL")
 
 def searchAPI(query=None): 
     
@@ -29,8 +30,27 @@ def searchAPI(query=None):
         
         
     except requests.exceptions.RequestException as e:
-        print("Error searching API: {e}")
+        print(f"Error searching API: {e}")
         return None
+    
+def searchID(id):
+    params = {
+        'key': API_KEY
+    }
+    
+    try: 
+        url = (ID_URL + str(id))
+        
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+        
+        return data
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Error searching API: {e}")
+        return None
+    
     
 def parseAPI(data):
     plantData = []
@@ -45,15 +65,32 @@ def parseAPI(data):
         plantData.append(filtered_data)
             
     return plantData
+
+def parseID(data):
+    plantData = {
+        'common_name': data.get('common_name'),
+        'scientific_name': data.get('scientific_name'),
+        'watering': data.get('watering'),
+        'sunlight': data.get('sunlight')
+    }
+    print (plantData)
+    return plantData
+    
+
+
+    
     
     
 def userSearch(searchString):
     return parseAPI(searchAPI(searchString))
 
+def buttonIDSearch(id):
+    return parseID(searchID(id))
 
 
 
 
+buttonIDSearch(2)
     
 
 

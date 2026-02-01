@@ -5,7 +5,7 @@ from PySide6.QtGui import QFont
 from Search_Window import Search_Window
 
 class Holder(QMainWindow):
-    def __init__ (self):
+    def __init__ (self, search):
         super().__init__()
         self.setWindowTitle("Planthing!")
         self.resize(800, 600)
@@ -16,6 +16,8 @@ class Holder(QMainWindow):
         vbox.setContentsMargins(0, 15, 0, 15)
         vbox.addStretch()
         
+        self.search = search
+        
         
         self.plantNameLabel = QLabel()
         font = QFont("Cascadia Mono", 20)
@@ -23,9 +25,9 @@ class Holder(QMainWindow):
         self.plantNameLabel.setFont(font)
         vbox.addWidget(self.plantNameLabel, alignment=Qt.AlignCenter)
         
-        self.imageDisplay = Display_Indicator()
-        self.imageDisplay.setMaximumSize(200,500)
-        vbox.addWidget(self.imageDisplay, alignment=Qt.AlignCenter)
+        self.indicator = Display_Indicator()
+        self.indicator.setMaximumSize(200,500)
+        vbox.addWidget(self.indicator, alignment=Qt.AlignCenter)
         
         self.searchWindow = None
         
@@ -50,6 +52,11 @@ class Holder(QMainWindow):
         
     def showSearchWindow(self):
         if self.searchWindow is None:
-            self.searchWindow = Search_Window()
+            self.searchWindow = self.search
         
         self.searchWindow.show()
+        
+    def newPlant(self, plant):
+        self.setPlantName(plant.plantName)
+        self.indicator.update(plant.exWaterLevel, plant.exLightLevel)
+        

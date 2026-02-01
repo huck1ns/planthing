@@ -60,19 +60,24 @@ class Value_Pane(QWidget):
         self.textBox.addWidget(self.lightExpectationLabel)
         self.textBox.addStretch()
         
+    def updateExpectations(self, water, light):
+        water_exp = f"Expected Water Level: {water}"
+        self.waterExpectationLabel.setText(water_exp)
+        
+        light_exp = f"Expected Light Level: {light}"
+        self.lightExpectationLabel.setText(light_exp)
+        
     def waterUpdate(self, waterLevel, expected):
         WATER_TEXT = f"Current Water Level: {waterLevel}"
-        EXPECTATION = f"Expected Water Level: {expected}"
-        
         self.waterLabel.setText(WATER_TEXT)
-        self.waterExpectationLabel.setText(EXPECTATION)
+        
         
     def lightUpdate(self, lightLevel, expected):
         LIGHT_TEXT = f"Current Light Level: {lightLevel}"
-        EXPECTATION = f"Expected Light Level: {expected}"
+        
         
         self.lightLabel.setText(LIGHT_TEXT)
-        self.lightExpectationLabel.setText(EXPECTATION)
+        
         
         
 class Display_Indicator(QWidget):
@@ -88,5 +93,8 @@ class Display_Indicator(QWidget):
         self.layout.addWidget(self.values, 1)
         
         self.setFixedWidth(400)
+        
+    def update(self, water, light):
+        self.values.updateExpectations(water, light)
     
         

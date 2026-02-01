@@ -4,8 +4,10 @@ from PySide6.QtCore import Qt
 
 
 class Search_Window(QWidget):
-    def __init__(self):
+    def __init__(self, logic):
         super().__init__()
+        
+        self.logic = logic
         self.setWindowTitle("Search Plant Database")
         self.resize(400,600)
         self.setMaximumSize(400,600)
@@ -15,7 +17,7 @@ class Search_Window(QWidget):
         self.searchBar.setFixedHeight(30)
         self.layout.addWidget(self.searchBar)
         
-        self.resultsList = Results()
+        self.resultsList = Results(logic)
         self.searchBar.returnPressed.connect(self.searchPressed)
         self.layout.addWidget(self.resultsList)
         
@@ -26,10 +28,12 @@ class Search_Window(QWidget):
         self.resultsList.search(userInput)
         
 class Results(QWidget):
-    def __init__(self):
+    
+    def __init__(self, logic):
         super().__init__()
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
+        self.logic = logic
         
     
     def search(self, userInput):
@@ -46,7 +50,7 @@ class Results(QWidget):
             plantName = plant["common_name"]
             id = plant["id"]
             science = plant["scientific_name"]
-            result = self.createResult(plantName, id, science)
+            result = self.createResultButton(plantName, id, science)
             resultsButtons.append(result)
             
         for button in resultsButtons:
@@ -58,14 +62,21 @@ class Results(QWidget):
             
         
         
-    def createResult(self, plantName, plantID, science):
+    def createResultButton(self, plantName, plantID, science):
         names = (str(plantName)+ "\n"+ str(science))
         result = QPushButton(names)
         result.setFixedSize(350, 47)
+        self.id = plantID
         
-        #when button pressed, take id and search api again with that to pull watering and light
+        result.clicked.connect(self.buttonPress)
         
         return result
+    
+    def buttonPress(self):
+        plantData = API_Handler.buttonIDSearch(self.id)
+        self.logic.updatePlant(plantData)
+        
+        
         
         
     
