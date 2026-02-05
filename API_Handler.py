@@ -1,5 +1,6 @@
 import requests
 import json
+import time
 import os
 from dotenv import load_dotenv
 
@@ -8,6 +9,8 @@ load_dotenv()
 API_KEY = os.getenv("PLANT_API_KEY")
 BASE_URL = os.getenv("BASE_URL")
 ID_URL = os.getenv("ID_URL")
+
+REQUEST_DELAY = 1
 
 def searchAPI(query=None): 
     
@@ -19,7 +22,7 @@ def searchAPI(query=None):
         params['q'] = query
 
     try: 
-        
+        time.sleep(REQUEST_DELAY)
         response = requests.get(BASE_URL, params = params)
         response.raise_for_status()
         
@@ -39,6 +42,7 @@ def searchID(id):
     }
     
     try: 
+        time.sleep(REQUEST_DELAY)
         url = (ID_URL + str(id))
         
         response = requests.get(url, params=params)
@@ -56,6 +60,7 @@ def parseAPI(data):
     plantData = []
     
     for plant in data.get('data', [])[:10]:
+        if int(plant.get('id')) > 3000: continue
         filtered_data = {
             'common_name': plant.get('common_name'),
             'id': plant.get('id'),
@@ -85,12 +90,13 @@ def userSearch(searchString):
     return parseAPI(searchAPI(searchString))
 
 def buttonIDSearch(id):
-    return parseID(searchID(id))
+    print(id)
+    x=  parseID(searchID(id))
+    print (x)
+    return x
 
 
 
-
-buttonIDSearch(2)
     
 
 

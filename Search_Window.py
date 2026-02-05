@@ -17,7 +17,7 @@ class Search_Window(QWidget):
         self.searchBar.setFixedHeight(30)
         self.layout.addWidget(self.searchBar)
         
-        self.resultsList = Results(logic)
+        self.resultsList = Results(logic, self)
         self.searchBar.returnPressed.connect(self.searchPressed)
         self.layout.addWidget(self.resultsList)
         
@@ -29,11 +29,12 @@ class Search_Window(QWidget):
         
 class Results(QWidget):
     
-    def __init__(self, logic):
+    def __init__(self, logic, window):
         super().__init__()
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.logic = logic
+        self.window = window
         
     
     def search(self, userInput):
@@ -66,15 +67,23 @@ class Results(QWidget):
         names = (str(plantName)+ "\n"+ str(science))
         result = QPushButton(names)
         result.setFixedSize(350, 47)
-        self.id = plantID
+        
+        #ID stored as property of the button
+        result.setProperty("plant_id", plantID)
         
         result.clicked.connect(self.buttonPress)
         
         return result
     
     def buttonPress(self):
-        plantData = API_Handler.buttonIDSearch(self.id)
+        #Retrieve the id of this instance of the button
+        sender = self.sender()
+        id = sender.property("plant_id")
+        
+        #Search and update
+        plantData = API_Handler.buttonIDSearch(id)
         self.logic.updatePlant(plantData)
+        self.window.close
         
         
         

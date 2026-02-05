@@ -59,4 +59,7 @@ class Holder(QMainWindow):
     def newPlant(self, plant):
         self.setPlantName(plant.plantName)
         self.indicator.update(plant.exWaterLevel, plant.exLightLevel)
+        self.indicator.pictures.setToLiving()
+    
+    
         
