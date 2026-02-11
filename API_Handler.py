@@ -1,6 +1,4 @@
 import requests
-import json
-import time
 import os
 from dotenv import load_dotenv
 
@@ -22,7 +20,6 @@ def searchAPI(query=None):
         params['q'] = query
 
     try: 
-        time.sleep(REQUEST_DELAY)
         response = requests.get(BASE_URL, params = params)
         response.raise_for_status()
         
@@ -42,7 +39,6 @@ def searchID(id):
     }
     
     try: 
-        time.sleep(REQUEST_DELAY)
         url = (ID_URL + str(id))
         
         response = requests.get(url, params=params)
