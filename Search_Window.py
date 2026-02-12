@@ -3,6 +3,7 @@ import API_Handler
 from PySide6.QtCore import Qt
 
 
+
 class Search_Window(QWidget):
     def __init__(self, logic):
         super().__init__()
@@ -36,15 +37,26 @@ class Results(QWidget):
         self.logic = logic
         self.window = window
         
-    
-    def search(self, userInput):
+    def clearSearchPane(self):
         while self.layout.count():
             item = self.layout.takeAt(0)
             widget = item.widget()
             if widget:
                 widget.deleteLater()
-                
+    
+    def search(self, userInput):
+        self.clearSearchPane()
+        
+        loadingLabel = QLabel("Searching database...")   
+        self.layout.addWidget(loadingLabel, alignment = Qt.AlignCenter)
+        
+        
         results = API_Handler.userSearch(userInput)
+        self.clearSearchPane()
+        if len(results) == 0:
+            noneLabel = QLabel("No results.")
+            self.layout.addWidget(noneLabel, alignment = Qt.AlignCenter)
+        
         resultsButtons = []
         
         for plant in results: 
@@ -64,7 +76,8 @@ class Results(QWidget):
         
         
     def createResultButton(self, plantName, plantID, science):
-        names = (str(plantName)+ "\n"+ str(science))
+        capName = str(plantName).title()
+        names = (capName+ "\n"+ str(science))
         result = QPushButton(names)
         result.setFixedSize(350, 47)
         

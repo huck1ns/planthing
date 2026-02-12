@@ -10,8 +10,6 @@ controller = Controller()
 
 window = controller.holder
 
-window.setPlantName(controller.plant.plantName)
-
 window.show()
 
 app.exec()
