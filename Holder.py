@@ -10,7 +10,8 @@ class Holder(QMainWindow):
         
         #Initialize basic window properties
         self.setWindowTitle("Planthing!")
-        self.resize(400, 600)
+        self.resize(500, 750)
+        self.setFixedSize(500, 750)
         self.setStyleSheet("QMainWindow { background-color: #F6FCF3; }")
         
         vbox = QVBoxLayout()
@@ -25,7 +26,7 @@ class Holder(QMainWindow):
         font = QFont("Constantia", 20)
         font.setBold(True)
         self.plantNameLabel.setFont(font)
-        self.plantNameLabel.setStyleSheet("color: black; padding-top: 20px")
+        self.plantNameLabel.setStyleSheet("color: #1A3028; padding-top: 20px")
         vbox.addWidget(self.plantNameLabel, alignment=Qt.AlignCenter)
         
         self.indicator = Display_Indicator()
@@ -38,7 +39,14 @@ class Holder(QMainWindow):
         vbox.addStretch()
         
         searchButton = QPushButton("Search database")
-        searchButton.setStyleSheet("background-color: #3C7A5E;")
+        searchButton.setStyleSheet("""
+            QPushButton {
+                background-color: #3C7A5E;
+                min-width: 200px;
+                min-height: 50px;
+                font-size: 14px;
+            }
+        """)
         searchButton.clicked.connect(self.showSearchWindow)
         vbox.addWidget(searchButton, alignment=Qt.AlignCenter)
         

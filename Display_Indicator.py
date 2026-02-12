@@ -1,5 +1,6 @@
 from PySide6.QtSvgWidgets import QSvgWidget
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QStackedLayout, QVBoxLayout, QLabel
+from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
 
 class Picture_Stack(QWidget):
@@ -40,34 +41,56 @@ class Picture_Stack(QWidget):
 class Value_Pane(QWidget):
     def __init__(self):
         super().__init__()
-        
-        # self.container = QWidget(self)
-        # self.container.setObjectName("background")
+        font = QFont("Segoe UI", 10)
         
         self.textBox = QVBoxLayout()
-        #self.container.setLayout(self.textBox)
         self.setLayout(self.textBox)
-        # self.setStyleSheet("#background {background-color: #3C7A5E; border-radius: 10px; }")
         self.setStyleSheet("background-color: #3C7A5E; border-radius: 10px; ")
-        #self.textBox.setSpacing(0)
         self.textBox.addStretch()
         
+        #Initialize box containing water values
+        self.waterStack = QWidget()
+        self.waterLayout = QVBoxLayout()
+        
         self.waterLabel = QLabel()
-        self.waterLabel.setStyleSheet("padding-left: 5px; padding-right: 5px; padding-top:8px; padding-bottom: 1px;")
+        self.waterLabel.setStyleSheet("padding-left: 3px; padding-right: 3px; padding-top:5px; padding-bottom: 1px;")
+        self.waterLabel.setFont(font)
+        
+        
         self.waterExpectationLabel = QLabel()
-        self.waterExpectationLabel.setStyleSheet("padding-left: 5px; padding-right: 5px; padding-top:1px; padding-bottom: 8px;")
+        self.waterExpectationLabel.setFont(font)
+        self.waterExpectationLabel.setStyleSheet("padding-left: 3px; padding-right: 3px; padding-top:1px; padding-bottom: 5px;")
+        
         self.waterUpdate("0")
         
+        self.waterStack.setLayout(self.waterLayout)
+        self.waterLayout.addWidget(self.waterLabel)
+        self.waterLayout.addWidget(self.waterExpectationLabel)
+        self.waterStack.setLayout(self.waterLayout)
+        
+        
+        #Initialize box containing light values
+        self.lightStack = QWidget()
+        self.lightLayout = QVBoxLayout()
+        
         self.lightLabel = QLabel()
-        self.lightLabel.setStyleSheet("padding-left: 5px; padding-right: 5px; padding-top:8px; padding-bottom: 1px;")
+        self.lightLabel.setStyleSheet("padding-left: 3px; padding-right: 3x; padding-top:5px; padding-bottom: 1px;")
+        self.lightLabel.setFont(font)
+        
         self.lightExpectationLabel = QLabel()
-        self.lightExpectationLabel.setStyleSheet("padding-left: 5px; padding-right: 5px; padding-top:1px; padding-bottom: 8px;")
+        self.lightExpectationLabel.setStyleSheet("padding-left: 3px; padding-right: 3px; padding-top:1px; padding-bottom: 5px;")
+        self.lightExpectationLabel.setFont(font)
+        
         self.lightUpdate("0")
         
-        self.textBox.addWidget(self.waterLabel)
-        self.textBox.addWidget(self.waterExpectationLabel)
-        self.textBox.addWidget(self.lightLabel)
-        self.textBox.addWidget(self.lightExpectationLabel)
+        self.lightStack.setLayout(self.lightLayout)
+        self.lightLayout.addWidget(self.lightLabel)
+        self.lightLayout.addWidget(self.lightExpectationLabel)
+        self.lightStack.setLayout(self.lightLayout)
+        
+        
+        self.textBox.addWidget(self.waterStack)
+        self.textBox.addWidget(self.lightStack)
         self.textBox.addStretch()
         
     def updateExpectations(self, water, light):
@@ -103,8 +126,7 @@ class Display_Indicator(QWidget):
         self.layout.addWidget(self.values, 1)
         
         
-        
-        self.setFixedWidth(400)
+        self.setFixedWidth(500)
         
     def update(self, water, light):
         self.values.updateExpectations(water, light)
