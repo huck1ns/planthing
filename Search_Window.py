@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget, QVBoxLayout, QLabel, QLineEdit
 import API_Handler
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QThread, Signal
 
 
 
@@ -28,6 +28,17 @@ class Search_Window(QWidget):
         userInput = self.searchBar.text()
         self.resultsList.search(userInput)
         
+class SearchWorker(QThread):
+    finished = Signal(list)  # Signal to emit results
+    
+    def __init__(self, userInput):
+        super().__init__()
+        self.userInput = userInput
+    
+    def run(self):
+        results = API_Handler.userSearch(self.userInput)
+        self.finished.emit(results)
+        
 class Results(QWidget):
     
     def __init__(self, logic, window):
@@ -50,12 +61,18 @@ class Results(QWidget):
         loadingLabel = QLabel("Searching database...")   
         self.layout.addWidget(loadingLabel, alignment = Qt.AlignCenter)
         
+        self.searchWorker = SearchWorker(userInput)
+        self.searchWorker.finished.connect(self.displayResults)
+        self.searchWorker.start()
         
-        results = API_Handler.userSearch(userInput)
+        
+    def displayResults(self, results):
         self.clearSearchPane()
+        
         if len(results) == 0:
             noneLabel = QLabel("No results.")
             self.layout.addWidget(noneLabel, alignment = Qt.AlignCenter)
+            return
         
         resultsButtons = []
         
