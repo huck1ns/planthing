@@ -7,9 +7,11 @@ from Search_Window import Search_Window
 class Holder(QMainWindow):
     def __init__ (self, search):
         super().__init__()
+        
+        #Initialize basic window properties
         self.setWindowTitle("Planthing!")
-        self.resize(800, 600)
-        self.setStyleSheet("QMainWindow { background-color: #162c3d; }")
+        self.resize(400, 600)
+        self.setStyleSheet("QMainWindow { background-color: #F6FCF3; }")
         
         vbox = QVBoxLayout()
         vbox.setSpacing(40)
@@ -20,9 +22,10 @@ class Holder(QMainWindow):
         
         
         self.plantNameLabel = QLabel()
-        font = QFont("Cascadia Mono", 20)
+        font = QFont("Constantia", 20)
         font.setBold(True)
         self.plantNameLabel.setFont(font)
+        self.plantNameLabel.setStyleSheet("color: black; padding-top: 20px")
         vbox.addWidget(self.plantNameLabel, alignment=Qt.AlignCenter)
         
         self.indicator = Display_Indicator()
@@ -35,6 +38,7 @@ class Holder(QMainWindow):
         vbox.addStretch()
         
         searchButton = QPushButton("Search database")
+        searchButton.setStyleSheet("background-color: #3C7A5E;")
         searchButton.clicked.connect(self.showSearchWindow)
         vbox.addWidget(searchButton, alignment=Qt.AlignCenter)
         
@@ -47,7 +51,7 @@ class Holder(QMainWindow):
         
         
     def setPlantName(self, name):
-        combinedName = f"Plant name: {name}"
+        combinedName = f"Your Plant: {name}"
         self.plantNameLabel.setText(combinedName)
         
     def showSearchWindow(self):

@@ -41,21 +41,31 @@ class Value_Pane(QWidget):
     def __init__(self):
         super().__init__()
         
-        self.textBox = QVBoxLayout(self)
-        self.textBox.setSpacing(0)
+        # self.container = QWidget(self)
+        # self.container.setObjectName("background")
+        
+        self.textBox = QVBoxLayout()
+        #self.container.setLayout(self.textBox)
+        self.setLayout(self.textBox)
+        # self.setStyleSheet("#background {background-color: #3C7A5E; border-radius: 10px; }")
+        self.setStyleSheet("background-color: #3C7A5E; border-radius: 10px; ")
+        #self.textBox.setSpacing(0)
         self.textBox.addStretch()
         
         self.waterLabel = QLabel()
+        self.waterLabel.setStyleSheet("padding-left: 5px; padding-right: 5px; padding-top:8px; padding-bottom: 1px;")
         self.waterExpectationLabel = QLabel()
-        self.waterUpdate("0", "0")
+        self.waterExpectationLabel.setStyleSheet("padding-left: 5px; padding-right: 5px; padding-top:1px; padding-bottom: 8px;")
+        self.waterUpdate("0")
         
         self.lightLabel = QLabel()
+        self.lightLabel.setStyleSheet("padding-left: 5px; padding-right: 5px; padding-top:8px; padding-bottom: 1px;")
         self.lightExpectationLabel = QLabel()
-        self.lightUpdate("0", "0")
+        self.lightExpectationLabel.setStyleSheet("padding-left: 5px; padding-right: 5px; padding-top:1px; padding-bottom: 8px;")
+        self.lightUpdate("0")
         
         self.textBox.addWidget(self.waterLabel)
         self.textBox.addWidget(self.waterExpectationLabel)
-        self.textBox.addSpacing(20)
         self.textBox.addWidget(self.lightLabel)
         self.textBox.addWidget(self.lightExpectationLabel)
         self.textBox.addStretch()
@@ -67,12 +77,12 @@ class Value_Pane(QWidget):
         light_exp = f"Expected Light Level: {light}"
         self.lightExpectationLabel.setText(light_exp)
         
-    def waterUpdate(self, waterLevel, expected):
+    def waterUpdate(self, waterLevel):
         WATER_TEXT = f"Current Water Level: {waterLevel}"
         self.waterLabel.setText(WATER_TEXT)
         
         
-    def lightUpdate(self, lightLevel, expected):
+    def lightUpdate(self, lightLevel):
         LIGHT_TEXT = f"Current Light Level: {lightLevel}"
         
         
@@ -91,6 +101,8 @@ class Display_Indicator(QWidget):
         
         self.layout.addWidget(self.pictures, 1)
         self.layout.addWidget(self.values, 1)
+        
+        
         
         self.setFixedWidth(400)
         
