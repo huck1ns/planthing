@@ -1,8 +1,6 @@
-from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget, QVBoxLayout, QLabel, QLineEdit
+from PySide6.QtWidgets import QPushButton, QWidget, QVBoxLayout, QLabel, QLineEdit
 import API_Handler
 from PySide6.QtCore import Qt, QThread, Signal
-
-
 
 class Search_Window(QWidget):
     def __init__(self, logic):
