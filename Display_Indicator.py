@@ -12,7 +12,7 @@ class Picture_Stack(QWidget):
         self.pictures.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
     
-        self.livingSVG = QSvgWidget('resources/livingplant.svg')
+        self.livingSVG = QSvgWidget('resources/plant3.svg')
         self.deadSVG = QSvgWidget('resources/deadplant.svg')
         self.emptySVG = QSvgWidget('resources/noplant.svg')
         
@@ -42,6 +42,7 @@ class Value_Pane(QWidget):
     def __init__(self):
         super().__init__()
         font = QFont("Segoe UI", 10)
+        font.setBold(True)
         
         self.textBox = QVBoxLayout()
         self.setLayout(self.textBox)
@@ -59,7 +60,7 @@ class Value_Pane(QWidget):
         
         self.waterExpectationLabel = QLabel()
         self.waterExpectationLabel.setFont(font)
-        self.waterExpectationLabel.setStyleSheet("padding-left: 3px; padding-right: 3px; padding-top:1px; padding-bottom: 5px;")
+        self.waterExpectationLabel.setStyleSheet("padding-left: 3px; padding-right: 3px; padding-bottom: 5px;")
         
         self.waterUpdate("0")
         
@@ -78,7 +79,7 @@ class Value_Pane(QWidget):
         self.lightLabel.setFont(font)
         
         self.lightExpectationLabel = QLabel()
-        self.lightExpectationLabel.setStyleSheet("padding-left: 3px; padding-right: 3px; padding-top:1px; padding-bottom: 5px;")
+        self.lightExpectationLabel.setStyleSheet("padding-left: 3px; padding-right: 3px; padding-bottom: 5px;")
         self.lightExpectationLabel.setFont(font)
         
         self.lightUpdate("0")

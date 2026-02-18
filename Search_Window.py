@@ -111,7 +111,7 @@ class Results(QWidget):
         #Search and update
         plantData = API_Handler.buttonIDSearch(id)
         self.logic.updatePlant(plantData)
-        self.window.close
+        self.window.close()
         
         
         
