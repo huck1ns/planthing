@@ -13,7 +13,7 @@ class Controller:
     def updatePlant(self, plantData):
         name = plantData["common_name"]
         watering = self.interpretWaterLevel(str(plantData["watering"]))
-        light = self.interpretLightLevel(str(plantData["sunlight"]))
+        light = self.interpretLightLevel(plantData["sunlight"])
         
         self.plant = Plant(name, watering, light)
         create_config(self)
@@ -30,11 +30,16 @@ class Controller:
         if des == "frequent": return 3
         
     def interpretLightLevel(self, des):
-        des = des.lower()
-        if des == "full shade": return 0
-        if des == "part shade": return 1
-        if des == "sun-part shade": return 2
-        if des == "full sun": return 3
+        desc = des[0].lower()
+        print(desc)
+        level = 0
+        for val in des:
+            if val == "none": level += 0
+            if val == "part shade": level += 1
+            if val == "part sun/part shade": level += 3
+            if val == "part sun": level += 2
+            if val == "full sun": level += 4
+        return level
         
     def handle_config(self):
         file_path = Path("config.ini")
