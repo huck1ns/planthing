@@ -38,6 +38,8 @@ class Holder(QMainWindow):
         #vbox.setAlignment(Qt.AlignmentFlag.AlignCenter) 
         vbox.addStretch()
         
+        searchFont = QFont("Segoe UI", 10)
+        
         searchButton = QPushButton("Search database")
         searchButton.setStyleSheet("""
             QPushButton {
@@ -47,6 +49,7 @@ class Holder(QMainWindow):
                 font-size: 14px;
             }
         """)
+        searchButton.setFont(searchFont)
         searchButton.clicked.connect(self.showSearchWindow)
         vbox.addWidget(searchButton, alignment=Qt.AlignCenter)
         
