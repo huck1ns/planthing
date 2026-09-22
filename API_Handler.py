@@ -10,6 +10,19 @@ ID_URL = os.getenv("ID_URL")
 
 REQUEST_DELAY = 1
 
+
+"""
+Searches API based on input string.
+
+Args: 
+    query, default = None for general search. String used to build lookup query. 
+    
+Returns:
+    data in json format
+
+Raises: 
+    Request exception
+"""
 def searchAPI(query=None): 
     
     params = {
@@ -56,15 +69,20 @@ def parseAPI(data):
     plantData = []
     
     for plant in data.get('data', [])[:10]:
+        
+        #API free tier only allows species data for plants ID 1-3000 !!
+        
         if int(plant.get('id')) > 3000: continue
+        
         filtered_data = {
             'common_name': plant.get('common_name'),
             'id': plant.get('id'),
             'scientific_name': plant.get('scientific_name')
+            
         }
+        print(filtered_data)
         
         plantData.append(filtered_data)
-            
     return plantData
 
 def parseID(data):
@@ -77,17 +95,12 @@ def parseID(data):
     print (plantData)
     return plantData
     
-
-
-    
-    
-    
 def userSearch(searchString):
     return parseAPI(searchAPI(searchString))
 
 def buttonIDSearch(id):
     print(id)
-    x=  parseID(searchID(id))
+    x =  parseID(searchID(id))
     print (x)
     return x
 

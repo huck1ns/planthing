@@ -47,6 +47,14 @@ class Holder(QMainWindow):
                 min-width: 200px;
                 min-height: 50px;
                 font-size: 14px;
+                
+            }
+            QPushButton:hover {
+                background-color: #4b9674;
+            }
+            
+            QPushButton:pressed {
+                background-color: #223d31;
             }
         """)
         searchButton.setFont(searchFont)
