@@ -111,9 +111,19 @@ class Results(QWidget):
         #Search and update
         plantData = API_Handler.buttonIDSearch(id)
         if plantData == 0:
+            self.showOutsideRangeAlert()
             return
         self.logic.updatePlant(plantData)
         self.window.close()
+        
+    def showOutsideRangeAlert(self): 
+        alertMsg = QMessageBox(self)
+        alertMsg.setWindowTitle("Plant out of range!")
+        alertMsg.setText("The plant you are trying to access is outside the range of Free API access.")
+        alertMsg.setIcon(QMessageBox.Information)
+        alertMsg.setStandardButtons(QMessageBox.Ok)
+        
+        result = alertMsg.exec()
         
         
         
