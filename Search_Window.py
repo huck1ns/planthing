@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QPushButton, QWidget, QVBoxLayout, QLabel, QLineEdit
+from PySide6.QtWidgets import QPushButton, QWidget, QVBoxLayout, QLabel, QLineEdit, QMessageBox
 import API_Handler
 from PySide6.QtCore import Qt, QThread, Signal
 
@@ -110,6 +110,8 @@ class Results(QWidget):
         
         #Search and update
         plantData = API_Handler.buttonIDSearch(id)
+        if plantData == 0:
+            return
         self.logic.updatePlant(plantData)
         self.window.close()
         

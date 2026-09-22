@@ -72,7 +72,7 @@ def parseAPI(data):
         
         #API free tier only allows species data for plants ID 1-3000 !!
         
-        if int(plant.get('id')) > 3000: continue
+        #if int(plant.get('id')) > 3000: continue
         
         filtered_data = {
             'common_name': plant.get('common_name'),
@@ -100,7 +100,10 @@ def userSearch(searchString):
 
 def buttonIDSearch(id):
     print(id)
-    x =  parseID(searchID(id))
+    if id>3000:
+        print("Plant falls outside of free tier range. Sorry!")
+        return 0
+    else: x =  parseID(searchID(id))
     print (x)
     return x
 
