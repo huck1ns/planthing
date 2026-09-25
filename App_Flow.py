@@ -3,10 +3,12 @@ from Plant import Plant
 from Search_Window import Search_Window
 from Config_Manager import create_config, read_config
 from pathlib import Path
+from Device_Handler import Device_Handler
 class Controller:
     def __init__(self):
         self.search = Search_Window(self)
         self.holder = Holder(self.search)
+        self.device = Device_Handler(self)
         self.handle_config()
         
     
@@ -52,11 +54,15 @@ class Controller:
             self.load_config()
         
     def load_config(self):
-        plantDetails = read_config()
+        NAME = 0
+        WATER = 1
+        LIGHT = 2
         
-        self.plant = Plant(plantDetails[0], plantDetails[1], plantDetails[2])
+        plantDetails = read_config()
+        self.plant = Plant(plantDetails[NAME], plantDetails[WATER], plantDetails[LIGHT])
         self.loadPlant()
         
+    #def read_sensors():
         
         
         

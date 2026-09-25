@@ -2,6 +2,8 @@
 LIGHT_DEVIATION = 0.5
 WATER_DEVIATION = 0.5
 
+
+
 class Plant():
     
     def __init__(self, name, waterLevel, lightLevel):
