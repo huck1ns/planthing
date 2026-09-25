@@ -2,6 +2,7 @@ import serial
 import time
 import threading
 import queue
+import serial.tools.list_ports
 
 class Device_Handler:
     def __init__(self):
@@ -9,14 +10,27 @@ class Device_Handler:
         self.ser = None
         self.connect()
         self.process_queue()
+        self.port = self.find_port()
+        self.connection = False
+        
+    def find_port(self):
+        ports = serial.tools.list_ports.comports()
+        for port in ports:
+            if 'ch340' in port.description.lower():
+                return port
+        return ""
         
 
     def connect(self):
         try: 
-            self.ser = serial.Serial('COM6', baudrate =9600, timeout = 1)
-            time.sleep(2)
-                    
-            self.thread = threading.Thread(target=self.read_serial, daemon = True)
+            if self.port()=="":
+                self.connection == False
+                return "Planthing not found."
+            else:
+                self.ser = serial.Serial(self.port, baudrate =9600, timeout = 1)
+                time.sleep(2)  
+                self.thread = threading.Thread(target=self.read_serial, daemon = True)
+                self.connection = True
         except Exception as e:
             print("Device not found.")
             
@@ -26,7 +40,7 @@ class Device_Handler:
 
     def read_serial(self): 
         try: 
-            while True:
+            while self.connection:
                 if self.ser.in_waiting > 0:
                     raw_data = self.ser.readline()
                     

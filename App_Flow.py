@@ -8,8 +8,11 @@ class Controller:
     def __init__(self):
         self.search = Search_Window(self)
         self.holder = Holder(self.search)
-        self.device = Device_Handler(self)
+        self.device = Device_Handler()
         self.handle_config()
+        while self.device.connection:
+            self.interpret_sensors()
+            
         
     
     def updatePlant(self, plantData):
@@ -24,6 +27,9 @@ class Controller:
     def loadPlant(self):
         self.holder.newPlant(self.plant)
         
+    """
+    Takes string description for water level and converts it to 0-3 scale.
+    """
     def interpretWaterLevel(self, des):
         des = des.lower()
         if des == "none": return 0
@@ -53,6 +59,10 @@ class Controller:
             create_config(self)
             self.load_config()
         
+        
+    """
+    Set current plant to one saved in config, runs once upon program start.
+    """
     def load_config(self):
         NAME = 0
         WATER = 1
@@ -62,7 +72,18 @@ class Controller:
         self.plant = Plant(plantDetails[NAME], plantDetails[WATER], plantDetails[LIGHT])
         self.loadPlant()
         
-    #def read_sensors():
+    def interpret_sensors(self):
+        stream = self.device.process_queue()
+        water = int(stream[0])
+        light = int(stream[3])
+        
+        
+        #BAD PRACTICE, JUST TESTING!!!
+        self.holder.indicator.values.waterUpdate(water)
+        self.holder.indicator.values.lightUpdate(light)
+
+        
+        
         
         
         
