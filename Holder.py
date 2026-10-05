@@ -17,7 +17,7 @@ class Holder(QMainWindow):
         self.setWindowIcon(QIcon("resources/plant3.svg"))
         
         vbox = QVBoxLayout()
-        vbox.setSpacing(40)
+        vbox.setSpacing(20)
         vbox.setContentsMargins(0, 15, 0, 15)
         vbox.addStretch()
         

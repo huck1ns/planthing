@@ -4,6 +4,8 @@ from Search_Window import Search_Window
 from Config_Manager import create_config, read_config
 from pathlib import Path
 from Device_Handler import Device_Handler
+from PySide6.QtCore import QTimer
+
 class Controller:
     def __init__(self):
         self.search = Search_Window(self)
@@ -11,11 +13,15 @@ class Controller:
         self.device = Device_Handler()
         self.handle_config()
         self.holder.updateConnectionStatus(self.device.connection)
-        while self.device.connection:
+        if self.device.connection:
             self.interpret_sensors()
-        
-            
-        
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(1000)
+
+    def update(self):
+        self.holder.updateConnectionStatus(self.device.checkConnection())
+        self.interpret_sensors()
     
     def updatePlant(self, plantData):
         name = plantData["common_name"]
@@ -76,9 +82,11 @@ class Controller:
         
     def interpret_sensors(self):
         stream = self.device.process_queue()
-        water = int(stream[0])
-        light = int(stream[3])
-        
+        water = 0
+        light = 0
+        if stream is not None: 
+            water = int(stream[0])
+            light = int(stream[2])
         
         #BAD PRACTICE, JUST TESTING!!!
         self.holder.indicator.values.waterUpdate(water)
