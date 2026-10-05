@@ -4,13 +4,24 @@ from Search_Window import Search_Window
 from Config_Manager import create_config, read_config
 from pathlib import Path
 from Device_Handler import Device_Handler
+from PySide6.QtCore import QTimer
+
 class Controller:
     def __init__(self):
         self.search = Search_Window(self)
         self.holder = Holder(self.search)
-        self.device = Device_Handler(self)
+        self.device = Device_Handler()
         self.handle_config()
-        
+        self.holder.updateConnectionStatus(self.device.connection)
+        if self.device.connection:
+            self.interpret_sensors()
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(1000)
+
+    def update(self):
+        self.holder.updateConnectionStatus(self.device.checkConnection())
+        self.interpret_sensors()
     
     def updatePlant(self, plantData):
         name = plantData["common_name"]
@@ -24,6 +35,9 @@ class Controller:
     def loadPlant(self):
         self.holder.newPlant(self.plant)
         
+    """
+    Takes string description for water level and converts it to 0-3 scale.
+    """
     def interpretWaterLevel(self, des):
         des = des.lower()
         if des == "none": return 0
@@ -53,6 +67,10 @@ class Controller:
             create_config(self)
             self.load_config()
         
+        
+    """
+    Set current plant to one saved in config, runs once upon program start.
+    """
     def load_config(self):
         NAME = 0
         WATER = 1
@@ -62,7 +80,20 @@ class Controller:
         self.plant = Plant(plantDetails[NAME], plantDetails[WATER], plantDetails[LIGHT])
         self.loadPlant()
         
-    #def read_sensors():
+    def interpret_sensors(self):
+        stream = self.device.process_queue()
+        water = 0
+        light = 0
+        if stream is not None: 
+            water = int(stream[0])
+            light = int(stream[2])
+        
+        #BAD PRACTICE, JUST TESTING!!!
+        self.holder.indicator.values.waterUpdate(water)
+        self.holder.indicator.values.lightUpdate(light)
+
+        
+        
         
         
         
