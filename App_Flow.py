@@ -10,8 +10,10 @@ class Controller:
         self.holder = Holder(self.search)
         self.device = Device_Handler()
         self.handle_config()
+        self.holder.updateConnectionStatus(self.device.connection)
         while self.device.connection:
             self.interpret_sensors()
+        
             
         
     

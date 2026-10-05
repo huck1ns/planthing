@@ -7,11 +7,12 @@ import serial.tools.list_ports
 class Device_Handler:
     def __init__(self):
         self.data_queue = queue.Queue()
+        self.connection = False
         self.ser = None
         self.connect()
         self.process_queue()
         self.port = self.find_port()
-        self.connection = False
+        
         
     def find_port(self):
         ports = serial.tools.list_ports.comports()
@@ -22,6 +23,7 @@ class Device_Handler:
         
 
     def connect(self):
+        self.find_port()
         try: 
             if self.port()=="":
                 self.connection == False

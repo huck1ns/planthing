@@ -3,6 +3,7 @@ from PySide6.QtCore import Qt
 from Display_Indicator import Display_Indicator
 from PySide6.QtGui import QFont
 from Search_Window import Search_Window
+from PySide6.QtGui import QIcon
 
 class Holder(QMainWindow):
     def __init__ (self, search):
@@ -13,6 +14,7 @@ class Holder(QMainWindow):
         self.resize(500, 750)
         self.setFixedSize(500, 750)
         self.setStyleSheet("QMainWindow { background-color: #F6FCF3; }")
+        self.setWindowIcon(QIcon("resources/plant3.svg"))
         
         vbox = QVBoxLayout()
         vbox.setSpacing(40)
@@ -28,6 +30,13 @@ class Holder(QMainWindow):
         self.plantNameLabel.setFont(font)
         self.plantNameLabel.setStyleSheet("color: #1A3028; padding-top: 20px")
         vbox.addWidget(self.plantNameLabel, alignment=Qt.AlignCenter)
+        
+        self.connectionStatus = QLabel()
+        font = QFont("Constantia", 14)
+        font.setBold(True)
+        self.connectionStatus.setFont(font)
+        vbox.addWidget(self.connectionStatus, alignment=Qt.AlignCenter)
+        
         
         self.indicator = Display_Indicator()
         self.indicator.setMaximumSize(200,500)
@@ -78,6 +87,14 @@ class Holder(QMainWindow):
             self.searchWindow = self.search
         
         self.searchWindow.show()
+        
+    def updateConnectionStatus(self, status):
+        if status:
+            self.connectionStatus.setText("Device Connected")
+            self.connectionStatus.setStyleSheet("color: green")
+        else:
+            self.connectionStatus.setText("Device Disconnected")
+            self.connectionStatus.setStyleSheet("color: red")
         
     def newPlant(self, plant):
         self.setPlantName(plant.plantName)

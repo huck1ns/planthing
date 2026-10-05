@@ -92,7 +92,6 @@ def parseID(data):
         'watering': data.get('watering'),
         'sunlight': data.get('sunlight')
     }
-    print (plantData)
     return plantData
     
 def userSearch(searchString):
@@ -104,7 +103,6 @@ def buttonIDSearch(id):
         print("Plant falls outside of free tier range. Sorry!")
         return 0
     else: x =  parseID(searchID(id))
-    print (x)
     return x
 
 
