@@ -19,10 +19,21 @@ class Controller:
         self.timer.timeout.connect(self.update)
         self.timer.start(1000)
 
+    
+    """
+    Ran on 1 second timer to provide constant GUI updates to sensor readings and ensure that device is connected.
+    """
     def update(self):
         self.holder.updateConnectionStatus(self.device.checkConnection())
         self.interpret_sensors()
     
+    
+    """
+    Creates a new plant, overwriting the previous, with user selected plant to update desired levels.
+
+    Args: 
+    plantData: dictionary of plant common_name, watering, and sunlight
+    """
     def updatePlant(self, plantData):
         name = plantData["common_name"]
         watering = self.interpretWaterLevel(str(plantData["watering"]))
@@ -32,11 +43,17 @@ class Controller:
         create_config(self)
         self.holder.newPlant(self.plant)
         
+    """
+    Update GUI with current plant data.
+    """
     def loadPlant(self):
         self.holder.newPlant(self.plant)
         
     """
-    Takes string description for water level and converts it to 0-3 scale.
+    Take string description for water level and convert it to 0-3 scale.
+    
+    Args: 
+        des: description of water level
     """
     def interpretWaterLevel(self, des):
         des = des.lower()
@@ -44,7 +61,13 @@ class Controller:
         if des == "minimum": return 1
         if des == "average": return 2
         if des == "frequent": return 3
-        
+    
+    """
+    Take string description for light level and convert it to 0-3 scale.
+    
+    Args: 
+        des: description of light level
+    """
     def interpretLightLevel(self, des):
         desc = des[0].lower()
         print(desc)
@@ -57,6 +80,7 @@ class Controller:
             if val == "full sun": level += 4
         return level
         
+    """Load saved data from past use or create a config if it has been removed / first time running."""
     def handle_config(self):
         file_path = Path("config.ini")
         
@@ -80,6 +104,7 @@ class Controller:
         self.plant = Plant(plantDetails[NAME], plantDetails[WATER], plantDetails[LIGHT])
         self.loadPlant()
         
+    """Read from sensor data to update light and water, update to zeroes if there is no data. """
     def interpret_sensors(self):
         stream = self.device.process_queue()
         water = 0
@@ -88,7 +113,6 @@ class Controller:
             water = int(stream[0])
             light = int(stream[2])
         
-        #BAD PRACTICE, JUST TESTING!!!
         self.holder.indicator.values.waterUpdate(water)
         self.holder.indicator.values.lightUpdate(light)
 

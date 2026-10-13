@@ -2,6 +2,14 @@ import configparser
 
 config = configparser.ConfigParser()
 
+
+"""
+Create and structure config.ini
+    
+Args: instance of app logic, default file name
+
+"""
+    
 def create_config(controller, filename='config.ini'):
     
     plantName = controller.plant.plantName
@@ -17,7 +25,15 @@ def create_config(controller, filename='config.ini'):
     
     with open(filename, 'w') as configfile:
         config.write(configfile)
-        
+    
+    
+    """
+    Read from config file
+    
+    args: default filename
+    
+    returns: tuple of name, water, light 
+    """
 def read_config(filename='config.ini'):
     config.read(filename)
     

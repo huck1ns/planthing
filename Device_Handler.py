@@ -13,7 +13,11 @@ class Device_Handler:
         self.thread = None
         self.connect()
         
-        
+    """
+    Find the port that the Arduino is connected to.
+    
+    Returns: port device
+    """
     def find_port(self):
         ports = serial.tools.list_ports.comports()
         for port in ports:
@@ -21,6 +25,13 @@ class Device_Handler:
                 return port.device
         return None
     
+    """
+    Connect to device, setting port and serial and creating new thread to handle connection and input stream
+    
+    Returns: Boolean of connection status
+    
+    Raises: SerialException
+    """
     def connect(self):
         self.disconnect()
         self.port = self.find_port()
@@ -41,7 +52,11 @@ class Device_Handler:
             print(f"Could not open {self.port}: {e}")
             self.connection = False
             return False
-        
+    
+    """
+    Closes serial, gives thread 2 seconds before stopping, setting serial and thread to None
+    """
+    
     def disconnect(self):
         self.connection = False
         if self.thread and self.thread.is_alive():
@@ -51,14 +66,23 @@ class Device_Handler:
         self.ser = None
         self.thread = None
             
+    """
+    Checks for a connection, if device is present but there is no connection, connects.
+    
+    Returns: Boolean of connection
+    """
     def checkConnection(self):
         con = self.find_port() is not None
         if con and not self.connection:
             self.connect()
         return con
             
-        
-
+    """
+    Read information from device, loading it to a queue. Runs continuously on thread
+    
+    Raises: SerialException
+    """
+    
     def read_serial(self): 
         ser = self.ser
         try: 
@@ -76,7 +100,11 @@ class Device_Handler:
         finally:
             self.connection = False
             
-            
+    """
+    Returns the latest data in the queue, ignores data that is no longer up to date.
+    
+    Returns: latest read data from serial, string format
+    """
     def process_queue(self):
         latest = None
         while True:
